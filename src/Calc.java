@@ -10,14 +10,31 @@ public class Calc {
     private JLabel label;
     private JPanel fieldsPanel;
     JButton[] numBtn;
+    JButton[] opBtn;
+    String resultText;
+    double result;
+    double temp;
+
+    boolean flagPlus;
+    boolean flagMinus;
+    boolean flagDivide;
+    boolean flagMultiply;
 
 
     public Calc(String title) {
+        resultText = "";
+        result = 0;
+        temp = 0;
+        flagPlus = false;
+        flagMinus = false;
+        flagDivide = false;
+        flagMultiply = false;
+
+
         calForm = new JFrame(title);
         calForm.setLocationRelativeTo(null);
         calForm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         ImageIcon iconImg = new ImageIcon("CalcIcon.png");
-        System.out.println(iconImg.getIconHeight());
         calForm.setIconImage(iconImg.getImage());
 
         JPanel panel = new JPanel(new BorderLayout(10, 10));
@@ -46,14 +63,16 @@ public class Calc {
             numBtn[i] = new JButton("" + i);
             numBtn[i].addActionListener(btnsHandler);
         }
-        JButton[] opBtn;
         opBtn = new JButton[6];
         opBtn[0] = new JButton("+");
         opBtn[1] = new JButton("-");
-        opBtn[2] = new JButton("\u00F7");
+        opBtn[2] = new JButton("\u00F7");   //divide
         opBtn[3] = new JButton("=");
-        opBtn[4] = new JButton(".");
-        opBtn[5] = new JButton("\u00D7");
+        opBtn[4] = new JButton("C");
+        opBtn[5] = new JButton("\u00D7");   //multiply
+        for (int i = 0; i < 6; i++) {
+            opBtn[i].addActionListener(btnsHandler);
+        }
 
         for (int i = 1; i < 4; i++) {
             fieldsPanel.add(numBtn[i]);
@@ -89,10 +108,61 @@ public class Calc {
     public class CButtonHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            for (int i = 0; i < 10; i++) {
-                if (e.getSource().equals(numBtn[i])) {
-                    label.setText("" + i);
-                    System.out.println("" + i);
+            if (e.getSource().equals(opBtn[4])) {
+                result = 0;
+                temp = 0;
+                resultText = "";
+                label.setText(resultText);
+            } else if (e.getSource().equals(opBtn[0])) {
+                flagPlus = true;
+                result = temp;
+                temp = 0;
+                resultText = "";
+                label.setText(resultText);
+            } else if (e.getSource().equals(opBtn[1])) {
+                flagMinus = true;
+                result = temp;
+                temp = 0;
+                resultText = "";
+                label.setText(resultText);
+            } else if (e.getSource().equals(opBtn[2])) {
+                flagDivide = true;
+                result = temp;
+                temp = 0;
+                resultText = "";
+                label.setText(resultText);
+            } else if (e.getSource().equals(opBtn[5])) {
+                flagMultiply = true;
+                result = temp;
+                temp = 0;
+                resultText = "";
+                label.setText(resultText);
+            } else if (e.getSource().equals(opBtn[3])) {
+                if (flagPlus) {
+                    result += temp;
+                    flagPlus = false;
+                } else if (flagMinus) {
+                    result -= temp;
+                    flagMinus = false;
+                } else if (flagDivide) {
+                    result /= temp;
+                    flagDivide = false;
+                } else if (flagMultiply) {
+                    result *= temp;
+                    flagMultiply = false;
+                }
+                temp = result;
+                label.setText("" + result);
+            } else {
+                for (int i = 0; i < 10; i++) {
+                    if (e.getSource().equals(numBtn[i])) {
+                        if (resultText.length() < 14) {
+                            resultText = resultText + i;
+                        }
+                        temp = Double.parseDouble(resultText);
+                        label.setText(resultText);
+                        System.out.println("" + i);
+                    }
                 }
             }
         }
