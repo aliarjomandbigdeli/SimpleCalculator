@@ -9,26 +9,22 @@ public class Calc {
     private JFrame calForm;
     private JLabel label;
     private JPanel fieldsPanel;
-    JButton[] numBtn;
-    JButton[] opBtn;
-    String resultText;
+    private JButton[] numBtn;
+    private JButton[] opBtn;
+    private String resultText;
     double result;
     double temp;
-
-    boolean flagPlus;
-    boolean flagMinus;
-    boolean flagDivide;
-    boolean flagMultiply;
+    boolean[] opFlag;
 
 
     public Calc(String title) {
         resultText = "";
         result = 0;
         temp = 0;
-        flagPlus = false;
-        flagMinus = false;
-        flagDivide = false;
-        flagMultiply = false;
+        opFlag = new boolean[4];
+        for (int i = 0; i < 4; i++) {
+            opFlag[i] = false;
+        }
 
 
         calForm = new JFrame(title);
@@ -67,9 +63,9 @@ public class Calc {
         opBtn[0] = new JButton("+");
         opBtn[1] = new JButton("-");
         opBtn[2] = new JButton("\u00F7");   //divide
-        opBtn[3] = new JButton("=");
+        opBtn[3] = new JButton("\u00D7");   //multiply
         opBtn[4] = new JButton("C");
-        opBtn[5] = new JButton("\u00D7");   //multiply
+        opBtn[5] = new JButton("=");
         for (int i = 0; i < 6; i++) {
             opBtn[i].addActionListener(btnsHandler);
         }
@@ -86,10 +82,10 @@ public class Calc {
             fieldsPanel.add(numBtn[i]);
         }
         fieldsPanel.add(opBtn[2]);
-        fieldsPanel.add(opBtn[3]);
+        fieldsPanel.add(opBtn[5]);
         fieldsPanel.add(numBtn[0]);
         fieldsPanel.add(opBtn[4]);
-        fieldsPanel.add(opBtn[5]);
+        fieldsPanel.add(opBtn[3]);
 
         int buttonWidth = numBtn[0].getPreferredSize().width + 20;
         int buttonHeight = numBtn[0].getPreferredSize().height + 20;
@@ -108,48 +104,33 @@ public class Calc {
     public class CButtonHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            for (int i = 0; i < 4; i++) {
+                if (e.getSource().equals(opBtn[i])) {
+                    opFlag[i] = true;
+                    result = temp;
+                    temp = 0;
+                    resultText = "";
+                    label.setText(resultText);
+                }
+            }
             if (e.getSource().equals(opBtn[4])) {
                 result = 0;
                 temp = 0;
                 resultText = "";
                 label.setText(resultText);
-            } else if (e.getSource().equals(opBtn[0])) {
-                flagPlus = true;
-                result = temp;
-                temp = 0;
-                resultText = "";
-                label.setText(resultText);
-            } else if (e.getSource().equals(opBtn[1])) {
-                flagMinus = true;
-                result = temp;
-                temp = 0;
-                resultText = "";
-                label.setText(resultText);
-            } else if (e.getSource().equals(opBtn[2])) {
-                flagDivide = true;
-                result = temp;
-                temp = 0;
-                resultText = "";
-                label.setText(resultText);
             } else if (e.getSource().equals(opBtn[5])) {
-                flagMultiply = true;
-                result = temp;
-                temp = 0;
-                resultText = "";
-                label.setText(resultText);
-            } else if (e.getSource().equals(opBtn[3])) {
-                if (flagPlus) {
+                if (opFlag[0]) {
                     result += temp;
-                    flagPlus = false;
-                } else if (flagMinus) {
+                    opFlag[0] = false;
+                } else if (opFlag[1]) {
                     result -= temp;
-                    flagMinus = false;
-                } else if (flagDivide) {
+                    opFlag[1] = false;
+                } else if (opFlag[2]) {
                     result /= temp;
-                    flagDivide = false;
-                } else if (flagMultiply) {
+                    opFlag[2] = false;
+                } else if (opFlag[3]) {
                     result *= temp;
-                    flagMultiply = false;
+                    opFlag[3] = false;
                 }
                 temp = result;
                 label.setText("" + result);
@@ -161,7 +142,6 @@ public class Calc {
                         }
                         temp = Double.parseDouble(resultText);
                         label.setText(resultText);
-                        System.out.println("" + i);
                     }
                 }
             }
