@@ -6,7 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.AbstractButton;
+import java.awt.datatransfer.*;
+import java.awt.Toolkit;
 
 public class Calc {
     private JFrame calForm;
@@ -39,7 +40,6 @@ public class Calc {
 
         fileMenu = new JMenu("File"); // create file menu
         fileMenu.setMnemonic(KeyEvent.VK_F); // set mnemonic to F
-        //fileMenu.doClick();
         JMenuItem copyItem = new JMenuItem("Copy Result",KeyEvent.VK_C);
         KeyStroke ctrlCKeyStroke = KeyStroke.getKeyStroke("control C");
         copyItem.setAccelerator(ctrlCKeyStroke);
@@ -270,14 +270,16 @@ public class Calc {
                     operatorOperations();
                     label.setText("" + result);
                     break;
-                case KeyEvent.VK_C:
-
+                case KeyEvent.VK_C: //copy result
+                    StringSelection stringSelection = new StringSelection(resultText);
+                    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                    clipboard.setContents(stringSelection, null);
                     //System.out.println("'c' released.");
                     break;
-//
-//                case KeyEvent.VK_F:
-//                    fileMenu.doClick();
-//                    break;
+
+                case KeyEvent.VK_F:
+                    fileMenu.doClick();
+                    break;
             }
         }
     }
