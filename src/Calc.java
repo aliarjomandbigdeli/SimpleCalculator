@@ -61,10 +61,15 @@ public class Calc {
         }
         opBtn = new JButton[6];
         opBtn[0] = new JButton("+");
+        opBtn[0].setToolTipText("addition");
         opBtn[1] = new JButton("-");
-        opBtn[2] = new JButton("\u00F7");   //divide
-        opBtn[3] = new JButton("\u00D7");   //multiply
+        opBtn[1].setToolTipText("subtraction");
+        opBtn[2] = new JButton("\u00F7");
+        opBtn[2].setToolTipText("division");
+        opBtn[3] = new JButton("\u00D7");
+        opBtn[3].setToolTipText("multiplication");
         opBtn[4] = new JButton("C");
+        opBtn[4].setToolTipText("clear");
         opBtn[5] = new JButton("=");
         for (int i = 0; i < 6; i++) {
             opBtn[i].addActionListener(btnsHandler);
