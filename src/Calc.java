@@ -4,6 +4,9 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import javax.swing.AbstractButton;
 
 public class Calc {
     private JFrame calForm;
@@ -15,6 +18,7 @@ public class Calc {
     double result;
     double temp;
     boolean[] opFlag;
+    JMenu fileMenu;
 
 
     public Calc(String title) {
@@ -33,18 +37,22 @@ public class Calc {
         ImageIcon iconImg = new ImageIcon("CalcIcon.png");
         calForm.setIconImage(iconImg.getImage());
 
-        JMenu fileMenu = new JMenu("File"); // create file menu
-        fileMenu.setMnemonic('F'); // set mnemonic to F
-        JMenuItem copyItem = new JMenuItem("Copy Result(CTRL + C)"); // create exit item
-        //copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.CTRL_MASK)); // set mnemonic to x
-        fileMenu.add(copyItem); // add exit item to file menu
-        JMenuItem exitItem = new JMenuItem("Exit    X"); // create exit item
-        exitItem.setMnemonic('x'); // set mnemonic to x
+        fileMenu = new JMenu("File"); // create file menu
+        fileMenu.setMnemonic(KeyEvent.VK_F); // set mnemonic to F
+        //fileMenu.doClick();
+        JMenuItem copyItem = new JMenuItem("Copy Result",KeyEvent.VK_C);
+        KeyStroke ctrlCKeyStroke = KeyStroke.getKeyStroke("control C");
+        copyItem.setAccelerator(ctrlCKeyStroke);
+        //copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK)); // set mnemonic to x
+        fileMenu.add(copyItem); // add copy item to file menu
+        JMenuItem exitItem = new JMenuItem("Exit"); // create exit item
+        exitItem.setMnemonic(KeyEvent.VK_X); // set mnemonic to x
         fileMenu.add(exitItem);
 
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(fileMenu);
         calForm.setJMenuBar(menuBar);
+
 
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -66,11 +74,13 @@ public class Calc {
 
         //fieldsPanel = new GridLayout(4, 4, 5, 5));
         CButtonHandler btnsHandler = new CButtonHandler();
+        KeyHandler keyHandler = new KeyHandler();
         fieldsPanel = new JPanel(new GridLayout(4, 4, 5, 5));
         numBtn = new JButton[10];
         for (int i = 0; i < 10; i++) {
             numBtn[i] = new JButton("" + i);
             numBtn[i].addActionListener(btnsHandler);
+            numBtn[i].addKeyListener(keyHandler);
         }
         opBtn = new JButton[6];
         opBtn[0] = new JButton("+");
@@ -137,20 +147,7 @@ public class Calc {
                 resultText = "";
                 label.setText(resultText);
             } else if (e.getSource().equals(opBtn[5])) {
-                if (opFlag[0]) {
-                    result += temp;
-                    opFlag[0] = false;
-                } else if (opFlag[1]) {
-                    result -= temp;
-                    opFlag[1] = false;
-                } else if (opFlag[2]) {
-                    result /= temp;
-                    opFlag[2] = false;
-                } else if (opFlag[3]) {
-                    result *= temp;
-                    opFlag[3] = false;
-                }
-                temp = result;
+                operatorOperations();
                 label.setText("" + result);
             } else {
                 for (int i = 0; i < 10; i++) {
@@ -166,4 +163,140 @@ public class Calc {
         }
     }
 
+
+    private class KeyHandler extends KeyAdapter {
+        @Override
+        public void keyReleased(KeyEvent e) {
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_0:
+                    if (resultText.length() < 14) {
+                        resultText = resultText + 0;
+                    }
+                    temp = Double.parseDouble(resultText);
+                    label.setText(resultText);
+                    break;
+                case KeyEvent.VK_1:
+                    if (resultText.length() < 14) {
+                        resultText = resultText + 1;
+                    }
+                    temp = Double.parseDouble(resultText);
+                    label.setText(resultText);
+                    break;
+                case KeyEvent.VK_2:
+                    if (resultText.length() < 14) {
+                        resultText = resultText + 2;
+                    }
+                    temp = Double.parseDouble(resultText);
+                    label.setText(resultText);
+                    break;
+                case KeyEvent.VK_3:
+                    if (resultText.length() < 14) {
+                        resultText = resultText + 3;
+                    }
+                    temp = Double.parseDouble(resultText);
+                    label.setText(resultText);
+                    break;
+                case KeyEvent.VK_4:
+                    if (resultText.length() < 14) {
+                        resultText = resultText + 4;
+                    }
+                    temp = Double.parseDouble(resultText);
+                    label.setText(resultText);
+                    break;
+                case KeyEvent.VK_5:
+                    if (resultText.length() < 14) {
+                        resultText = resultText + 5;
+                    }
+                    temp = Double.parseDouble(resultText);
+                    label.setText(resultText);
+                    break;
+                case KeyEvent.VK_6:
+                    if (resultText.length() < 14) {
+                        resultText = resultText + 6;
+                    }
+                    temp = Double.parseDouble(resultText);
+                    label.setText(resultText);
+                    break;
+                case KeyEvent.VK_7:
+                    if (resultText.length() < 14) {
+                        resultText = resultText + 7;
+                    }
+                    temp = Double.parseDouble(resultText);
+                    label.setText(resultText);
+                    break;
+                case KeyEvent.VK_8:
+                    if (resultText.length() < 14) {
+                        resultText = resultText + 8;
+                    }
+                    temp = Double.parseDouble(resultText);
+                    label.setText(resultText);
+                    break;
+                case KeyEvent.VK_9:
+                    if (resultText.length() < 14) {
+                        resultText = resultText + 9;
+                    }
+                    temp = Double.parseDouble(resultText);
+                    label.setText(resultText);
+                    break;
+                case KeyEvent.VK_PLUS:
+                    opFlag[0] = true;
+                    result = temp;
+                    temp = 0;
+                    resultText = "";
+                    label.setText(resultText);
+                    break;
+                case KeyEvent.VK_MINUS:
+                    opFlag[1] = true;
+                    result = temp;
+                    temp = 0;
+                    resultText = "";
+                    label.setText(resultText);
+                    break;
+                case KeyEvent.VK_DIVIDE:
+                    opFlag[2] = true;
+                    result = temp;
+                    temp = 0;
+                    resultText = "";
+                    label.setText(resultText);
+                    break;
+                case KeyEvent.VK_MULTIPLY:
+                    opFlag[3] = true;
+                    result = temp;
+                    temp = 0;
+                    resultText = "";
+                    label.setText(resultText);
+                    break;
+                case KeyEvent.VK_EQUALS:
+                    operatorOperations();
+                    label.setText("" + result);
+                    break;
+                case KeyEvent.VK_C:
+
+                    //System.out.println("'c' released.");
+                    break;
+//
+//                case KeyEvent.VK_F:
+//                    fileMenu.doClick();
+//                    break;
+            }
+        }
+    }
+
+
+    private void operatorOperations(){
+        if (opFlag[0]) {
+            result += temp;
+            opFlag[0] = false;
+        } else if (opFlag[1]) {
+            result -= temp;
+            opFlag[1] = false;
+        } else if (opFlag[2]) {
+            result /= temp;
+            opFlag[2] = false;
+        } else if (opFlag[3]) {
+            result *= temp;
+            opFlag[3] = false;
+        }
+        temp = result;
+    }
 }
