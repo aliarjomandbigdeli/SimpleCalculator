@@ -33,6 +33,19 @@ public class Calc {
         ImageIcon iconImg = new ImageIcon("CalcIcon.png");
         calForm.setIconImage(iconImg.getImage());
 
+        JMenu fileMenu = new JMenu("File"); // create file menu
+        fileMenu.setMnemonic('F'); // set mnemonic to F
+        JMenuItem copyItem = new JMenuItem("Copy Result(CTRL + C)"); // create exit item
+        //copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.CTRL_MASK)); // set mnemonic to x
+        fileMenu.add(copyItem); // add exit item to file menu
+        JMenuItem exitItem = new JMenuItem("Exit    X"); // create exit item
+        exitItem.setMnemonic('x'); // set mnemonic to x
+        fileMenu.add(exitItem);
+
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.add(fileMenu);
+        calForm.setJMenuBar(menuBar);
+
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(new EmptyBorder(5, 5, 5, 5));
         calForm.setContentPane(panel);
