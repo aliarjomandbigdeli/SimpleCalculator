@@ -2,10 +2,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.awt.datatransfer.*;
 import java.awt.Toolkit;
 
@@ -16,10 +13,10 @@ public class Calc {
     private JButton[] numBtn;
     private JButton[] opBtn;
     private String resultText;
-    double result;
-    double temp;
-    boolean[] opFlag;
-    JMenu fileMenu;
+    private double result;
+    private double temp;
+    private boolean[] opFlag;
+    private JMenu fileMenu;
 
 
     public Calc(String title) {
@@ -43,12 +40,20 @@ public class Calc {
         JMenuItem copyItem = new JMenuItem("Copy Result", KeyEvent.VK_C);
         KeyStroke ctrlCKeyStroke = KeyStroke.getKeyStroke("control C");
         copyItem.setAccelerator(ctrlCKeyStroke);
+        copyItem.addActionListener((ActionEvent e) -> {
+            StringSelection stringSelection = new StringSelection("" + result);
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(stringSelection, null);
+        });
         //copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK)); // set mnemonic to x
         fileMenu.add(copyItem); // add copy item to file menu
         JMenuItem exitItem = new JMenuItem("Exit"); // create exit item
         exitItem.setMnemonic(KeyEvent.VK_X); // set mnemonic to x
+        //exitItem.addActionListener(mouseHandler);
+        exitItem.addActionListener((ActionEvent e) -> {
+            System.exit(0);
+        });
         fileMenu.add(exitItem);
-
 
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(fileMenu);
@@ -273,22 +278,9 @@ public class Calc {
                     operatorOperations();
                     label.setText("" + result);
                     break;
-                case KeyEvent.VK_C: //copy result
-                    StringSelection stringSelection = new StringSelection(resultText);
-                    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                    clipboard.setContents(stringSelection, null);
-                    //System.out.println("'c' released.");
-                    break;
-
-//                case KeyEvent.VK_F:
-//                    fileMenu.doClick();
-//                    break;
-
-//                case KeyEvent.VK_X:
-//                    System.exit(0);
-//                    break;
             }
         }
+
     }
 
 
