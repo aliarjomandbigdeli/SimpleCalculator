@@ -40,7 +40,7 @@ public class Calc {
 
         fileMenu = new JMenu("File"); // create file menu
         fileMenu.setMnemonic(KeyEvent.VK_F); // set mnemonic to F
-        JMenuItem copyItem = new JMenuItem("Copy Result",KeyEvent.VK_C);
+        JMenuItem copyItem = new JMenuItem("Copy Result", KeyEvent.VK_C);
         KeyStroke ctrlCKeyStroke = KeyStroke.getKeyStroke("control C");
         copyItem.setAccelerator(ctrlCKeyStroke);
         //copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK)); // set mnemonic to x
@@ -48,6 +48,7 @@ public class Calc {
         JMenuItem exitItem = new JMenuItem("Exit"); // create exit item
         exitItem.setMnemonic(KeyEvent.VK_X); // set mnemonic to x
         fileMenu.add(exitItem);
+
 
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(fileMenu);
@@ -81,6 +82,7 @@ public class Calc {
             numBtn[i] = new JButton("" + i);
             numBtn[i].addActionListener(btnsHandler);
             numBtn[i].addKeyListener(keyHandler);
+            //numBtn[i].setFocusable(false);
         }
         opBtn = new JButton[6];
         opBtn[0] = new JButton("+");
@@ -96,6 +98,7 @@ public class Calc {
         opBtn[5] = new JButton("=");
         for (int i = 0; i < 6; i++) {
             opBtn[i].addActionListener(btnsHandler);
+            opBtn[i].addKeyListener(keyHandler);
         }
 
         for (int i = 1; i < 4; i++) {
@@ -277,15 +280,19 @@ public class Calc {
                     //System.out.println("'c' released.");
                     break;
 
-                case KeyEvent.VK_F:
-                    fileMenu.doClick();
-                    break;
+//                case KeyEvent.VK_F:
+//                    fileMenu.doClick();
+//                    break;
+
+//                case KeyEvent.VK_X:
+//                    System.exit(0);
+//                    break;
             }
         }
     }
 
 
-    private void operatorOperations(){
+    private void operatorOperations() {
         if (opFlag[0]) {
             result += temp;
             opFlag[0] = false;
