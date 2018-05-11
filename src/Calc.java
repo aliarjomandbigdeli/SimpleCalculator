@@ -78,58 +78,14 @@ public class Calc {
         label.setPreferredSize(new Dimension(labelWidth, labelHeight));
 
 
-        //fieldsPanel = new GridLayout(4, 4, 5, 5));
         CButtonHandler btnsHandler = new CButtonHandler();
         KeyHandler keyHandler = new KeyHandler();
-        fieldsPanel = new JPanel(new GridLayout(4, 4, 5, 5));
-        numBtn = new JButton[10];
-        for (int i = 0; i < 10; i++) {
-            numBtn[i] = new JButton("" + i);
-            numBtn[i].addActionListener(btnsHandler);
-            numBtn[i].addKeyListener(keyHandler);
-            //numBtn[i].setFocusable(false);
-        }
-        opBtn = new JButton[6];
-        opBtn[0] = new JButton("+");
-        opBtn[0].setToolTipText("addition");
-        opBtn[1] = new JButton("-");
-        opBtn[1].setToolTipText("subtraction");
-        opBtn[2] = new JButton("\u00F7");
-        opBtn[2].setToolTipText("division");
-        opBtn[3] = new JButton("\u00D7");
-        opBtn[3].setToolTipText("multiplication");
-        opBtn[4] = new JButton("C");
-        opBtn[4].setToolTipText("clear");
-        opBtn[5] = new JButton("=");
-        for (int i = 0; i < 6; i++) {
-            opBtn[i].addActionListener(btnsHandler);
-            opBtn[i].addKeyListener(keyHandler);
-        }
-
-        for (int i = 1; i < 4; i++) {
-            fieldsPanel.add(numBtn[i]);
-        }
-        fieldsPanel.add(opBtn[0]);
-        for (int i = 4; i < 7; i++) {
-            fieldsPanel.add(numBtn[i]);
-        }
-        fieldsPanel.add(opBtn[1]);
-        for (int i = 7; i < 10; i++) {
-            fieldsPanel.add(numBtn[i]);
-        }
-        fieldsPanel.add(opBtn[2]);
-        fieldsPanel.add(opBtn[5]);
-        fieldsPanel.add(numBtn[0]);
-        fieldsPanel.add(opBtn[4]);
-        fieldsPanel.add(opBtn[3]);
-
-        int buttonWidth = numBtn[0].getPreferredSize().width + 20;
-        int buttonHeight = numBtn[0].getPreferredSize().height + 20;
-        numBtn[0].setPreferredSize(new Dimension(buttonWidth, buttonHeight));
-
+        CBtn buttons = new CBtn();
+        buttons.setBtnsHandler(btnsHandler);
+        buttons.setKeyHandler(keyHandler);
 
         panel.add(label, BorderLayout.NORTH);
-        panel.add(fieldsPanel, BorderLayout.CENTER);
+        panel.add(buttons, BorderLayout.CENTER);
     }
 
     public void showGUI() {
@@ -140,39 +96,55 @@ public class Calc {
     public class CButtonHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            for (int i = 0; i < 4; i++) {
-                if (e.getSource().equals(opBtn[i])) {
-                    opFlag[i] = true;
-                    result = temp;
-                    temp = 0;
-                    resultText = "";
+            for (int i = 0; i < 10; i++) {
+                if (e.getActionCommand().equals("number" + i)) {
+                    if (resultText.length() < 14) {
+                        resultText = resultText + i;
+                    }
+                    temp = Double.parseDouble(resultText);
                     label.setText(resultText);
                 }
             }
-            if (e.getSource().equals(opBtn[4])) {
+
+            if (e.getActionCommand().equals("addition")) {
+                opFlag[0] = true;
+                result = temp;
+                temp = 0;
+                resultText = "";
+                label.setText(resultText);
+            } else if (e.getActionCommand().equals("subtraction")) {
+                opFlag[1] = true;
+                result = temp;
+                temp = 0;
+                resultText = "";
+                label.setText(resultText);
+            } else if (e.getActionCommand().equals("division")) {
+                opFlag[1] = true;
+                result = temp;
+                temp = 0;
+                resultText = "";
+                label.setText(resultText);
+            } else if (e.getActionCommand().equals("multiplication")) {
+                opFlag[1] = true;
+                result = temp;
+                temp = 0;
+                resultText = "";
+                label.setText(resultText);
+            } else if (e.getActionCommand().equals("clear")) {
                 result = 0;
                 temp = 0;
                 resultText = "";
                 label.setText(resultText);
-            } else if (e.getSource().equals(opBtn[5])) {
+            } else if (e.getActionCommand().equals("equal")) {
                 operatorOperations();
                 label.setText("" + result);
-            } else {
-                for (int i = 0; i < 10; i++) {
-                    if (e.getSource().equals(numBtn[i])) {
-                        if (resultText.length() < 14) {
-                            resultText = resultText + i;
-                        }
-                        temp = Double.parseDouble(resultText);
-                        label.setText(resultText);
-                    }
-                }
             }
+
         }
     }
 
 
-    private class KeyHandler extends KeyAdapter {
+    public class KeyHandler extends KeyAdapter {
         @Override
         public void keyReleased(KeyEvent e) {
             switch (e.getKeyCode()) {
