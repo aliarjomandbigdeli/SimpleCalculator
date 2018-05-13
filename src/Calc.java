@@ -9,13 +9,10 @@ import java.awt.Toolkit;
 public class Calc {
     private JFrame calForm;
     private JLabel label;
-    private JPanel fieldsPanel;
-    private JButton[] numBtn;
-    private JButton[] opBtn;
+    private boolean[] opFlag;
     private String resultText;
     private double result;
     private double temp;
-    private boolean[] opFlag;
     private JMenu fileMenu;
 
 
@@ -78,10 +75,11 @@ public class Calc {
         label.setPreferredSize(new Dimension(labelWidth, labelHeight));
 
 
-        CButtonHandler btnsHandler = new CButtonHandler();
+        CButtonHandler btnHandler = new CButtonHandler();
         KeyHandler keyHandler = new KeyHandler();
+
         CBtn buttons = new CBtn();
-        buttons.setBtnsHandler(btnsHandler);
+        buttons.setActionListener(btnHandler);
         buttons.setKeyHandler(keyHandler);
 
         panel.add(label, BorderLayout.NORTH);
@@ -96,6 +94,36 @@ public class Calc {
     public class CButtonHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+//            for (int i = 0; i < 4; i++) {
+//                if (e.getSource().equals(opBtn[i])) {
+//                    opFlag[i] = true;
+//                    result = temp;
+//                    temp = 0;
+//                    resultText = "";
+//                    label.setText(resultText);
+//                }
+//            }
+//            if (e.getSource().equals(opBtn[4])) {
+//                result = 0;
+//                temp = 0;
+//                resultText = "";
+//                label.setText(resultText);
+//            } else if (e.getSource().equals(opBtn[5])) {
+//                operatorOperations();
+//                label.setText("" + result);
+//            } else {
+//                for (int i = 0; i < 10; i++) {
+//                    if (e.getSource().equals(numBtn[i])) {
+//                        if (resultText.length() < 14) {
+//                            resultText = resultText + i;
+//                        }
+//                        temp = Double.parseDouble(resultText);
+//                        label.setText(resultText);
+//                    }
+//                }
+//            }
+
+
             for (int i = 0; i < 10; i++) {
                 if (e.getActionCommand().equals("number" + i)) {
                     if (resultText.length() < 14) {
@@ -119,13 +147,13 @@ public class Calc {
                 resultText = "";
                 label.setText(resultText);
             } else if (e.getActionCommand().equals("division")) {
-                opFlag[1] = true;
+                opFlag[2] = true;
                 result = temp;
                 temp = 0;
                 resultText = "";
                 label.setText(resultText);
             } else if (e.getActionCommand().equals("multiplication")) {
-                opFlag[1] = true;
+                opFlag[3] = true;
                 result = temp;
                 temp = 0;
                 resultText = "";

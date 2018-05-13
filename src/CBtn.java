@@ -1,15 +1,9 @@
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicComboBoxUI;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class CBtn extends JPanel {
     JButton[] numBtn;
     JButton[] opBtn;
-
-    Calc.CButtonHandler btnsHandler;
-    Calc.KeyHandler keyHandler;
 
     public CBtn() {
         super(new GridLayout(4, 4, 5, 5));
@@ -19,8 +13,6 @@ public class CBtn extends JPanel {
         for (int i = 0; i < 10; i++) {
             numBtn[i] = new JButton("" + i);
             numBtn[i].setActionCommand("number" + i);
-            numBtn[i].addActionListener(btnsHandler);
-            numBtn[i].addKeyListener(keyHandler);
             //numBtn[i].setFocusable(false);
         }
         opBtn = new JButton[6];
@@ -42,10 +34,6 @@ public class CBtn extends JPanel {
         opBtn[5] = new JButton("=");
         opBtn[5].setToolTipText("equal");
         opBtn[5].setActionCommand("equal");
-        for (int i = 0; i < 6; i++) {
-            opBtn[i].addActionListener(btnsHandler);
-            opBtn[i].addKeyListener(keyHandler);
-        }
 
         for (int i = 1; i < 4; i++) {
             add(numBtn[i]);
@@ -70,11 +58,74 @@ public class CBtn extends JPanel {
 
     }
 
-    public void setBtnsHandler(Calc.CButtonHandler btnsHandler) {
-        this.btnsHandler = btnsHandler;
+    public void setActionListener(Calc.CButtonHandler listener) {
+        for (int i = 0; i < 10; i++) {
+            numBtn[i].addActionListener(listener);
+        }
+        for (int i = 0; i < 6; i++) {
+            opBtn[i].addActionListener(listener);
+        }
+
+
     }
 
     public void setKeyHandler(Calc.KeyHandler keyHandler) {
-        this.keyHandler = keyHandler;
+        for (int i = 0; i < 10; i++) {
+            numBtn[i].addKeyListener(keyHandler);
+        }
+        for (int i = 0; i < 6; i++) {
+            opBtn[i].addKeyListener(keyHandler);
+        }
     }
+
+
+//    @Override
+//    public void actionPerformed(ActionEvent e) {
+//        for (int i = 0; i < 4; i++) {
+//            if (e.getSource().equals(opBtn[i])) {
+//                opFlag[i] = true;
+//                result = temp;
+//                temp = 0;
+//                resultText = "";
+//                label.setText(resultText);
+//            }
+//        }
+//        if (e.getSource().equals(opBtn[4])) {
+//            result = 0;
+//            temp = 0;
+//            resultText = "";
+//            label.setText(resultText);
+//        } else if (e.getSource().equals(opBtn[5])) {
+//            operatorOperations();
+//            label.setText("" + result);
+//        } else {
+//            for (int i = 0; i < 10; i++) {
+//                if (e.getSource().equals(numBtn[i])) {
+//                    if (resultText.length() < 14) {
+//                        resultText = resultText + i;
+//                    }
+//                    temp = Double.parseDouble(resultText);
+//                    label.setText(resultText);
+//                }
+//            }
+//        }
+//    }
+//
+//    private void operatorOperations() {
+//        if (opFlag[0]) {
+//            result += temp;
+//            opFlag[0] = false;
+//        } else if (opFlag[1]) {
+//            result -= temp;
+//            opFlag[1] = false;
+//        } else if (opFlag[2]) {
+//            result /= temp;
+//            opFlag[2] = false;
+//        } else if (opFlag[3]) {
+//            result *= temp;
+//            opFlag[3] = false;
+//        }
+//        temp = result;
+//    }
+
 }
