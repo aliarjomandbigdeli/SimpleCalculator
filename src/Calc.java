@@ -6,6 +6,13 @@ import java.awt.event.*;
 import java.awt.datatransfer.*;
 import java.awt.Toolkit;
 
+
+/**
+ * this class is for building Calc object
+ *
+ * @author Ali ArjomandBigdeli
+ * @since 5.13.2018
+ */
 public class Calc {
     private JFrame calForm;
     private JLabel label;
@@ -35,14 +42,14 @@ public class Calc {
         fileMenu = new JMenu("File"); // create file menu
         fileMenu.setMnemonic(KeyEvent.VK_F); // set mnemonic to F
         JMenuItem copyItem = new JMenuItem("Copy Result", KeyEvent.VK_C);
-        KeyStroke ctrlCKeyStroke = KeyStroke.getKeyStroke("control C");
-        copyItem.setAccelerator(ctrlCKeyStroke);
+        //KeyStroke ctrlCKeyStroke = KeyStroke.getKeyStroke("control C");
+        //copyItem.setAccelerator(ctrlCKeyStroke);
+        copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK)); // set mnemonic to x
         copyItem.addActionListener((ActionEvent e) -> {
             StringSelection stringSelection = new StringSelection("" + result);
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(stringSelection, null);
         });
-        //copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK)); // set mnemonic to x
         fileMenu.add(copyItem); // add copy item to file menu
         JMenuItem exitItem = new JMenuItem("Exit"); // create exit item
         exitItem.setMnemonic(KeyEvent.VK_X); // set mnemonic to x

@@ -1,6 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
 
+
+/**
+ * this class creates all buttons we need in this calculator
+ *
+ * @author Ali ArjomandBigdeli
+ * @since 5.13.2018
+ */
 public class CBtn extends JPanel {
     private JButton[] numBtn;
     private JButton[] opBtn;
